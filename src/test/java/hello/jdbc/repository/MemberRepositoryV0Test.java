@@ -1,12 +1,14 @@
 package hello.jdbc.repository;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.agent.VirtualMachine.ForHotSpot.Connection.Response;
 @Slf4j
 public class MemberRepositoryV0Test {
 
@@ -15,15 +17,24 @@ public class MemberRepositoryV0Test {
 	@Test
 	void crud() throws SQLException {
 		//save
-		Member member = new Member("memberV4", 10000);
+		Member member = new Member("memberV100", 10000);
 		repository.save(member);
 		
 		//findById
 		Member findMember = repository.findById(member.getMemberId());
 		log.info("findMember={}", findMember);
-		log.info("member == findmember {}", member == findMember);
-		log.info("member equals findMember {}", member.equals(findMember));
 		Assertions.assertThat(findMember).isEqualTo(member);
+		
+		//update money: 10000 -> 20000
+		repository.update(member.getMemberId(), 20000);
+		Member updatedMember = repository.findById(member.getMemberId());
+		Assertions.assertThat(updatedMember.getMoney()).isEqualTo(20000);
+		
+		//delete
+		repository.delete(member.getMemberId());
+		//삭제한것을 검증하려는 경우에는 이렇게
+		Assertions.assertThatThrownBy(() -> repository.findById(member.getMemberId()))
+			.isInstanceOf(NoSuchElementException.class);
 	}
 }
 
