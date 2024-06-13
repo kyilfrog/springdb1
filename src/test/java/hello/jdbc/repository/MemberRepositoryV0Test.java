@@ -17,7 +17,7 @@ public class MemberRepositoryV0Test {
 	@Test
 	void crud() throws SQLException {
 		//save
-		Member member = new Member("memberV100", 10000);
+		Member member = new Member("memberV11", 10000);
 		repository.save(member);
 		
 		//findById
@@ -35,6 +35,7 @@ public class MemberRepositoryV0Test {
 		//삭제한것을 검증하려는 경우에는 이렇게
 		Assertions.assertThatThrownBy(() -> repository.findById(member.getMemberId()))
 			.isInstanceOf(NoSuchElementException.class);
+		
 	}
 }
 
