@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 
